@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connec Radio — Estúdio & AutoDJ</title>
+  <meta name="description" content="Painel de controle de estúdio, automação de rádio e grade de programação por calendário do Connec Radio." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Barra de Topo do Estúdio -->
+  <header class="studio-header">
+    <div class="header-left">
+      <div class="studio-logo">
+        <div class="logo-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            <line x1="12" y1="19" x2="12" y2="22"></line>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">CONNEC STUDIO</span>
+          <span class="brand-sub">AutoDJ & Automação de Rádio</span>
+        </div>
+      </div>
+
+      <div class="on-air-badge" id="on-air-badge">
+        <span class="on-air-dot"></span>
+        <span class="on-air-text">NO AR</span>
+      </div>
+    </div>
+
+    <div class="header-center">
+      <div class="current-show-pill" id="current-show-pill">
+        <span class="show-label">PROGRAMA ATUAL:</span>
+        <span class="show-name" id="header-show-name">Carregando grade...</span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <div class="studio-clock" id="studio-clock">00:00:00</div>
+      <a href="/" target="_blank" class="btn-player-link" title="Abrir Player dos Ouvintes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <line x1="10" y1="14" x2="21" y2="3"></line>
+        </svg>
+        <span>Player Web</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Container Principal do Estúdio -->
+  <main class="studio-main">
+
+    <!-- Grid Superior: Deck Principal + Fila + Microfone -->
+    <div class="studio-top-grid">
+
+      <!-- Coluna 1: Deck Master / No Ar -->
+      <section class="panel-card deck-card">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <span class="panel-icon">🎛️</span>
+            <h2 class="panel-title">DECK PRINCIPAL</h2>
+          </div>
+          <div class="deck-mode-toggle">
+            <button class="mode-btn active" id="btn-mode-autodj" title="O AutoDJ toca 24/7 e segue o calendário">AutoDJ (24/7)</button>
+            <button class="mode-btn" id="btn-mode-manual" title="Modo Manual / DJ">Manual</button>
+          </div>
+        </div>
+
+        <div class="deck-content">
+          <!-- Arte do Vinil / Álbum -->
+          <div class="deck-visual">
+            <div class="deck-vinyl" id="deck-vinyl">
+              <div class="vinyl-center-art">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </div>
+            </div>
+            <div class="deck-level-meter" aria-hidden="true">
+              <div class="meter-bar"><div class="meter-fill" id="meter-l"></div></div>
+              <div class="meter-bar"><div class="meter-fill" id="meter-r"></div></div>
+            </div>
+          </div>
+
+          <!-- Informações da Faixa Atual -->
+          <div class="deck-info">
+            <div class="deck-tag-row">
+              <span class="badge-type" id="deck-track-type">MÚSICA</span>
+              <span class="badge-prog" id="deck-prog-name">Geral</span>
+            </div>
+            <h1 class="deck-track-title" id="deck-track-title">Aguardando faixa...</h1>
+            <p class="deck-track-artist" id="deck-track-artist">Connec Radio</p>
+
+            <!-- Barra de Progresso e Tempo -->
+            <div class="deck-progress-wrapper">
+              <div class="deck-progress-bar" id="deck-progress-bar">
+                <div class="deck-progress-fill" id="deck-progress-fill" style="width: 0%"></div>
+              </div>
+              <div class="deck-time-row">
+                <span class="time-elapsed" id="deck-time-elapsed">00:00</span>
+                <span class="time-remaining" id="deck-time-remaining">-00:00</span>
+                <span class="time-total" id="deck-time-total">00:00</span>
+              </div>
+            </div>
+
+            <!-- Controles de Transporte Master -->
+            <div class="deck-controls">
+              <button class="btn-transport btn-prev" id="btn-deck-prev" title="Reiniciar Faixa">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+              </button>
+              <button class="btn-transport btn-play-master" id="btn-deck-play" title="Play / Pause">
+                <svg id="deck-icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <svg id="deck-icon-pause" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+              </button>
+              <button class="btn-transport btn-next" id="btn-deck-next" title="Próxima Faixa (Skip)">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="m6 18 8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Coluna 2: Fila de Reprodução (Up Next) -->
+      <section class="panel-card queue-card">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <span class="panel-icon">📋</span>
+            <h2 class="panel-title">A SEGUIR (FILA)</h2>
+          </div>
+          <span class="queue-count-badge" id="queue-count">0 faixas</span>
+        </div>
+
+        <div class="queue-list" id="queue-list">
+          <!-- Itens da fila gerados dinamicamente via JS -->
+          <div class="queue-empty">Fila vazia. O AutoDJ irá abastecer automaticamente...</div>
+        </div>
+
+        <div class="queue-footer">
+          <button class="btn-queue-action" id="btn-reshuffle" title="Embaralhar próximas">🔀 Reembaralhar</button>
+          <button class="btn-queue-action" id="btn-insert-jingle" title="Inserir vinheta agora">⚡ + Vinheta</button>
+        </div>
+      </section>
+
+      <!-- Coluna 3: Microfone do Locutor & Mesa de Vinhetas Rápidas -->
+      <section class="panel-card studio-live-tools">
+        
+        <!-- Microfone com Auto-Ducking -->
+        <div class="mic-section">
+          <div class="panel-header">
+            <div class="panel-title-wrap">
+              <span class="panel-icon">🎙️</span>
+              <h2 class="panel-title">LOCUÇÃO AO VIVO</h2>
+            </div>
+          </div>
+
+          <div class="mic-box">
+            <button class="btn-mic" id="btn-mic-toggle">
+              <div class="mic-icon-circle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                  <line x1="12" y1="19" x2="12" y2="22"></line>
+                </svg>
+              </div>
+              <span class="mic-btn-label" id="mic-status-label">MICROFONE DESLIGADO</span>
+              <span class="mic-sublabel">Clique para Falar (Auto-Ducking)</span>
+            </button>
+
+            <div class="ducking-indicator" id="ducking-indicator">
+              <span class="duck-dot"></span>
+              <span>Auto-Ducking: Música em 15% enquanto você fala</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Soundboard / Vinhetas Instantâneas -->
+        <div class="soundboard-section">
+          <div class="panel-header">
+            <div class="panel-title-wrap">
+              <span class="panel-icon">🔔</span>
+              <h2 class="panel-title">VINHETAS RÁPIDAS (JINGLES)</h2>
+            </div>
+          </div>
+
+          <div class="soundboard-grid">
+            <button class="btn-soundboard" data-jingle="ident_1">
+              <span class="sb-name">Identificação Rádio</span>
+              <span class="sb-time">0:05</span>
+            </button>
+            <button class="btn-soundboard" data-jingle="hora_certa">
+              <span class="sb-name">Hora Certa</span>
+              <span class="sb-time">0:04</span>
+            </button>
+            <button class="btn-soundboard" data-jingle="sucessos">
+              <span class="sb-name">Top Sucessos</span>
+              <span class="sb-time">0:06</span>
+            </button>
+            <button class="btn-soundboard" data-jingle="transicao">
+              <span class="sb-name">Transição Rápida</span>
+              <span class="sb-time">0:03</span>
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+
+    <!-- Seção Inferior com Abas: Grade de Calendário / Biblioteca de Mídias -->
+    <section class="panel-card studio-tabs-card">
+      <div class="tabs-nav">
+        <button class="tab-btn active" data-tab="tab-schedule">
+          <span class="tab-icon">📅</span>
+          <span>Grade de Programação (Calendário Semanal)</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-library">
+          <span class="tab-icon">📁</span>
+          <span>Biblioteca de Músicas & Playlists</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-history">
+          <span class="tab-icon">📜</span>
+          <span>Histórico de Reprodução</span>
+        </button>
+      </div>
+
+      <div class="tab-content-container">
+
+        <!-- ABA 1: Grade de Programação Semanal por Calendário -->
+        <div class="tab-pane active" id="tab-schedule">
+          <div class="schedule-toolbar">
+            <div class="toolbar-info">
+              <h3>Grade 24/7 da Rádio</h3>
+              <p>O AutoDJ seleciona a playlist automaticamente conforme o dia da semana e horário.</p>
+            </div>
+            <div class="toolbar-actions">
+              <button class="btn-primary" id="btn-add-program">➕ Novo Programa</button>
+            </div>
+          </div>
+
+          <!-- Grade Visual dos 7 Dias da Semana -->
+          <div class="weekly-schedule-grid" id="weekly-schedule-grid">
+            <!-- Colunas de Domingo a Sábado geradas via JS -->
+          </div>
+        </div>
+
+        <!-- ABA 2: Biblioteca de Músicas & Playlists (Gerenciador do HD) -->
+        <div class="tab-pane" id="tab-library">
+          
+          <!-- Visão Principal das Playlists / Pastas -->
+          <div id="library-overview-view">
+            <div class="library-toolbar">
+              <div class="library-stats" id="library-stats">
+                <span>Calculando arquivos de áudio do HD...</span>
+              </div>
+              <div class="library-actions">
+                <button class="btn-primary" id="btn-new-playlist">➕ Nova Playlist / Pasta</button>
+                <button class="btn-secondary" id="btn-open-media-root">📂 Abrir Pasta Media no Windows</button>
+                <button class="btn-secondary" id="btn-rescan-media">🔄 Re-escanear Disco</button>
+              </div>
+            </div>
+
+            <div class="library-categories-grid" id="library-categories-grid">
+              <!-- Categorias e Playlists geradas via JS -->
+            </div>
+          </div>
+
+          <!-- Visão Detalhada de uma Pasta Selecionada -->
+          <div id="library-folder-detail-view" style="display:none;">
+            <div class="folder-detail-header">
+              <div class="breadcrumb-row">
+                <button class="btn-back-library" id="btn-back-library">⬅ Voltar às Playlists</button>
+                <span class="breadcrumb-sep">/</span>
+                <h3 class="folder-detail-title" id="folder-detail-title">Nome da Pasta</h3>
+                <span class="folder-detail-path" id="folder-detail-path">media/musicas/...</span>
+              </div>
+
+              <div class="folder-actions-row">
+                <label class="btn-primary btn-upload-label" title="Selecionar arquivos MP3 do HD">
+                  <span>⬆️ Adicionar MP3s do HD</span>
+                  <input type="file" id="input-audio-upload" multiple accept=".mp3,.wav,.ogg,.aac,.m4a,.flac,.wma" style="display:none;" />
+                </label>
+                <button class="btn-secondary" id="btn-open-current-folder">📂 Abrir esta Pasta no Windows</button>
+                <button class="btn-secondary" id="btn-refresh-folder">🔄 Atualizar</button>
+              </div>
+            </div>
+
+            <!-- Zona de Arrastar e Soltar Arquivos do Windows -->
+            <div class="dropzone-area" id="dropzone-area">
+              <div class="dropzone-content">
+                <div class="dropzone-icon">📥</div>
+                <div class="dropzone-text">
+                  <strong>Arraste arquivos de áudio (.mp3, .wav, .aac, .m4a) aqui</strong>
+                  <span>ou clique no botão acima para adicionar diretamente do seu computador</span>
+                </div>
+              </div>
+              <div class="upload-progress-bar" id="upload-progress-bar" style="display:none;">
+                <div class="upload-progress-fill" id="upload-progress-fill" style="width: 0%"></div>
+                <span class="upload-progress-text" id="upload-progress-text">Enviando arquivos...</span>
+              </div>
+            </div>
+
+            <!-- Tabela de Faixas Reais da Pasta -->
+            <div class="folder-tracks-container">
+              <div class="tracks-table-header">
+                <span class="col-num">#</span>
+                <span class="col-title">Título / Arquivo</span>
+                <span class="col-artist">Artista</span>
+                <span class="col-size">Tamanho</span>
+                <span class="col-dur">Duração</span>
+                <span class="col-actions">Ações</span>
+              </div>
+              <div class="tracks-table-body" id="tracks-table-body">
+                <!-- Lista de faixas reais gerada via JS -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ABA 3: Histórico de Reprodução -->
+        <div class="tab-pane" id="tab-history">
+          <div class="history-list" id="history-list">
+            <div class="history-empty">Nenhuma música no histórico recente ainda.</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal para Adicionar / Editar Programa na Grade de Calendário -->
+  <div class="modal-overlay" id="modal-program" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-program-title">Adicionar Programa à Grade</h3>
+        <button class="btn-close-modal" id="btn-close-modal">&times;</button>
+      </div>
+      <form id="form-program" class="modal-form">
+        <input type="hidden" id="prog-id" value="" />
+
+        <div class="form-group">
+          <label for="prog-name">Nome do Programa</label>
+          <input type="text" id="prog-name" required placeholder="Ex: Manhã Connec Hits" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="prog-start">Horário de Início</label>
+            <input type="time" id="prog-start" required value="08:00" />
+          </div>
+          <div class="form-group">
+            <label for="prog-end">Horário de Término</label>
+            <input type="time" id="prog-end" required value="12:00" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Dias da Semana</label>
+          <div class="days-checkbox-group">
+            <label class="day-chip"><input type="checkbox" name="prog_day" value="1" checked /> Seg</label>
+            <label class="day-chip"><input type="checkbox" name="prog_day" value="2" checked /> Ter</label>
+            <label class="day-chip"><input type="checkbox" name="prog_day" value="3" checked /> Qua</label>
+            <label class="day-chip"><input type="checkbox" name="prog_day" value="4" checked /> Qui</label>
+            <label class="day-chip"><input type="checkbox" name="prog_day" value="5" checked /> Sex</label>
+            <label class="day-chip"><input type="checkbox" name="prog_day" value="6" /> Sáb</label>
+            <label class="day-chip"><input type="checkbox" name="prog_day" value="0" /> Dom</label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="prog-playlist">Playlist / Estilo</label>
+            <select id="prog-playlist">
+              <option value="geral">Músicas Gerais</option>
+              <option value="pop_hits">Pop & Hits</option>
+              <option value="flashback">Flashback 80/90</option>
+              <option value="dance">Dance & Eletrônica</option>
+              <option value="chill">Lounge & Chill</option>
+              <option value="acustico">Acústico & MPB</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="prog-jingle-freq">Frequência de Vinhetas</label>
+            <select id="prog-jingle-freq">
+              <option value="2">A cada 2 músicas</option>
+              <option value="3" selected>A cada 3 músicas</option>
+              <option value="4">A cada 4 músicas</option>
+              <option value="5">A cada 5 músicas</option>
+              <option value="0">Sem vinhetas</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="prog-color">Cor de Destaque na Grade</label>
+          <input type="color" id="prog-color" value="#06B6D4" />
+        </div>
+
+        <!-- Seção de Roteiro de Músicas do Programa -->
+        <div class="program-tracks-section">
+          <div class="pts-header">
+            <div class="pts-title-wrap">
+              <span class="pts-icon">🎵</span>
+              <label>Roteiro de Músicas deste Programa (Opcional / Específico)</label>
+            </div>
+            <div class="pts-duration-pill" id="prog-duration-summary">
+              <span>Programação: <strong id="summary-slot-dur">04h 00m</strong></span>
+              <span class="sep">•</span>
+              <span>Selecionado: <strong id="summary-tracks-dur" class="text-cyan">0 músicas (00:00)</strong></span>
+            </div>
+          </div>
+
+          <div class="pts-mode-row">
+            <div class="pts-mode-select">
+              <label class="pts-radio"><input type="radio" name="prog_playback_mode" value="sequential" checked /> Ordem Sequencial (1, 2, 3...)</label>
+              <label class="pts-radio"><input type="radio" name="prog_playback_mode" value="random" /> Sorteio Aleatório</label>
+            </div>
+            <div class="pts-search-box">
+              <input type="text" id="pts-search-input" placeholder="🔍 Buscar música no HD..." />
+            </div>
+          </div>
+
+          <div class="pts-dual-selector">
+            <!-- Lista 1: Músicas Disponíveis no HD -->
+            <div class="pts-column">
+              <div class="pts-col-header">
+                <span>Disponíveis (<span id="pts-avail-count">0</span>)</span>
+                <button type="button" class="btn-add-all-pts" id="btn-add-all-pts" title="Adicionar todas as músicas desta pasta ao roteiro">+ Adicionar Todas</button>
+              </div>
+              <div class="pts-tracks-list" id="pts-avail-list">
+                <!-- Itens gerados via JS com botão + -->
+              </div>
+            </div>
+
+            <!-- Lista 2: Músicas Selecionadas para este Programa -->
+            <div class="pts-column">
+              <div class="pts-col-header">
+                <span>Roteiro Deste Programa (<span id="pts-selected-count">0</span>)</span>
+                <button type="button" class="btn-clear-pts" id="btn-clear-pts" title="Limpar todas as músicas do programa">Limpar</button>
+              </div>
+              <div class="pts-tracks-list" id="pts-selected-list">
+                <!-- Itens ordenados com botão de subir, descer e remover -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" id="btn-cancel-modal">Cancelar</button>
+          <button type="button" class="btn-danger" id="btn-delete-prog" style="display:none">Excluir</button>
+          <button type="button" class="btn-primary btn-play-prog-now" id="btn-force-play-prog" style="background: linear-gradient(135deg, var(--emerald), var(--cyan));">▶ Tocar Este Programa Agora</button>
+          <button type="submit" class="btn-primary">Salvar Programa</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal para Criar Nova Playlist / Pasta -->
+  <div class="modal-overlay" id="modal-playlist" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Nova Pasta / Playlist</h3>
+        <button class="btn-close-modal" id="btn-close-playlist-modal">&times;</button>
+      </div>
+      <form id="form-new-playlist" class="modal-form">
+        <div class="form-group">
+          <label for="playlist-name">Nome da Playlist</label>
+          <input type="text" id="playlist-name" required placeholder="Ex: Rock Nacional, Sertanejo, etc." />
+        </div>
+
+        <div class="form-group">
+          <label for="playlist-folder">Nome da Pasta no HD (sem espaços)</label>
+          <input type="text" id="playlist-folder" required placeholder="Ex: rock_nacional" />
+        </div>
+
+        <div class="form-group">
+          <label for="playlist-color">Cor da Tag</label>
+          <input type="color" id="playlist-color" value="#8B5CF6" />
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" id="btn-cancel-playlist-modal">Cancelar</button>
+          <button type="submit" class="btn-primary">Criar Pasta</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

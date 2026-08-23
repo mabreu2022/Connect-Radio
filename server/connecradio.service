@@ -1,0 +1,31 @@
+[Unit]
+Description=Connec Radio — Servidor WebRTC (WHIP/WHEP)
+After=network.target coturn.service
+
+[Service]
+Type=simple
+User=connecradio
+Group=connecradio
+WorkingDirectory=/opt/connecradio
+
+# Variáveis de ambiente (preenchidas pelo install.sh)
+EnvironmentFile=/opt/connecradio/.env
+
+ExecStart=/usr/bin/node /opt/connecradio/server.js
+Restart=always
+RestartSec=5
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=connecradio
+
+# Limites de sistema (WebRTC usa muitos descritores)
+LimitNOFILE=65536
+LimitNPROC=4096
+
+# Segurança básica
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

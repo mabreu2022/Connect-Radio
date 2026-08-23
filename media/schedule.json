@@ -1,0 +1,158 @@
+[
+  {
+    "id": "prog-1",
+    "name": "Madrugada Lounge",
+    "startTime": "00:00",
+    "endTime": "06:00",
+    "playlist": "chill",
+    "jingleFrequency": 4,
+    "color": "#6366f1",
+    "days": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      0
+    ],
+    "tracks": [
+      "a598d02b35819967",
+      "569d7dc2b32db3cc",
+      "e69991371ae4582c",
+      "75f778d69eec11d3",
+      "789416abd9c5bb09"
+    ],
+    "playbackMode": "sequential"
+  },
+  {
+    "id": "prog-2",
+    "name": "Café com Connec",
+    "days": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "startTime": "06:00",
+    "endTime": "09:00",
+    "playlist": "pop_hits",
+    "color": "#F59E0B",
+    "jingleFrequency": 3,
+    "description": "Comece o seu dia com os melhores sucessos e energia"
+  },
+  {
+    "id": "prog-3",
+    "name": "Manhã Connec Hits",
+    "days": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "startTime": "09:00",
+    "endTime": "12:00",
+    "playlist": "pop_hits",
+    "color": "#EC4899",
+    "jingleFrequency": 3,
+    "description": "As mais pedidas e os lançamentos do momento"
+  },
+  {
+    "id": "prog-4",
+    "name": "Almoço Flashback 80/90",
+    "days": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "startTime": "12:00",
+    "endTime": "14:00",
+    "playlist": "flashback",
+    "color": "#06B6D4",
+    "jingleFrequency": 3,
+    "description": "Os clássicos inesquecíveis dos anos 80 e 90"
+  },
+  {
+    "id": "prog-5",
+    "name": "Tarde Total",
+    "days": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "startTime": "14:00",
+    "endTime": "18:00",
+    "playlist": "geral",
+    "color": "#10B981",
+    "jingleFrequency": 3,
+    "description": "A melhor seleção musical para a sua tarde"
+  },
+  {
+    "id": "prog-6",
+    "name": "Connec Mix Dance",
+    "days": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "startTime": "18:00",
+    "endTime": "22:00",
+    "playlist": "dance",
+    "color": "#8B5CF6",
+    "jingleFrequency": 3,
+    "description": "Batidas eletrônicas, dance e remixes exclusivos"
+  },
+  {
+    "id": "prog-7",
+    "name": "Noite Acústica",
+    "days": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "startTime": "22:00",
+    "endTime": "23:59",
+    "playlist": "acustico",
+    "color": "#3B82F6",
+    "jingleFrequency": 4,
+    "description": "Versões acústicas e pop rock desplugado"
+  },
+  {
+    "id": "prog-8",
+    "name": "Super Fim de Semana",
+    "days": [
+      0,
+      6
+    ],
+    "startTime": "06:00",
+    "endTime": "18:00",
+    "playlist": "pop_hits",
+    "color": "#F43F5E",
+    "jingleFrequency": 3,
+    "description": "O melhor do fim de semana sem parar"
+  },
+  {
+    "id": "prog-9",
+    "name": "Balada Connec",
+    "days": [
+      0,
+      6
+    ],
+    "startTime": "18:00",
+    "endTime": "23:59",
+    "playlist": "dance",
+    "color": "#A855F7",
+    "jingleFrequency": 2,
+    "description": "As pistas de dança tocam aqui no seu fim de semana"
+  }
+]

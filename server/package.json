@@ -1,0 +1,29 @@
+{
+  "name": "connecradio-webrtc-server",
+  "version": "1.0.0",
+  "description": "Connec Radio — Servidor WebRTC próprio com WHIP/WHEP",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@roamhq/wrtc": "^0.8.0",
+    "express": "^4.19.2",
+    "multer": "^2.2.0",
+    "selfsigned": "^2.4.1",
+    "uuid": "^9.0.1",
+    "ws": "^8.18.0"
+  },
+  "keywords": [
+    "webrtc",
+    "whip",
+    "whep",
+    "radio",
+    "streaming"
+  ],
+  "license": "MIT"
+}

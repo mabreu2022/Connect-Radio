@@ -1,0 +1,55 @@
+# Node.js
+node_modules/
+server/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Áudios e arquivos pesados do HD (Não sobe os áudios nem arquivos locais de teste)
+*.mp3
+*.wav
+*.ogg
+*.flac
+*.m4a
+*.aac
+*.wma
+media/musicas/**/*.mp3
+media/musicas/**/*.wav
+media/musicas/**/*.ogg
+media/musicas/**/*.m4a
+media/musicas/**/*.flac
+media/musicas/**/*.zip
+media/musicas/**/*.rar
+media/musicas/**/*.exe
+media/musicas/**/*.log
+media/comerciais/**/*.mp3
+media/comerciais/**/*.wav
+media/comerciais/**/*.m4a
+media/comerciais/**/*.ogg
+media/vinhetas/**/*.mp3
+media/vinhetas/**/*.wav
+media/vinhetas/**/*.m4a
+media/vinhetas/**/*.ogg
+
+# Pastas de testes locais antigas dentro de media
+media/musicas/mp3 novas/public/
+media/musicas/mp3 novas/utils/
+media/musicas/mp3 novas/*.js*
+media/musicas/mp3 novas/*.json*
+media/musicas/mp3 novas/*.md
+media/musicas/mp3/Delphi*
+media/musicas/mp3/ELETRONICAS/
+media/musicas/mp3/*.ini
+media/musicas/mp3/*.dat
+media/musicas/mp3/*.idx
+
+# Mantém as configurações oficiais do sistema e .gitkeep para estrutura de pastas
+!media/**/.gitkeep
+!media/playlists.json
+!media/schedule.json
+!media/history.json
+
+# Sistema e Ambiente
+.env
+.DS_Store
+Thumbs.db

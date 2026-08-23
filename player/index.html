@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connec Radio — Ao Vivo</title>
+  <meta name="description" content="Ouça a Connec Radio ao vivo — streaming de áudio em tempo real via WebRTC." />
+  <meta property="og:title" content="Connec Radio — Ao Vivo" />
+  <meta property="og:description" content="Ouça a Connec Radio ao vivo." />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Fundo animado com partículas -->
+  <div class="bg-canvas" aria-hidden="true">
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+    <canvas id="particles-canvas"></canvas>
+  </div>
+
+  <main class="player-container" role="main">
+
+    <!-- Card principal do player -->
+    <article class="player-card" id="player-card">
+
+      <!-- Cabeçalho / Logo -->
+      <header class="player-header">
+        <div class="logo-ring" id="logo-ring" aria-hidden="true">
+          <div class="logo-ring-inner">
+            <div class="logo-icon">
+              <!-- Ícone de ondas (SVG inline) -->
+              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="32" cy="38" r="5" fill="url(#grad1)"/>
+                <path d="M20 32 Q32 18 44 32" stroke="url(#grad1)" stroke-width="3" stroke-linecap="round" fill="none"/>
+                <path d="M14 26 Q32 6 50 26" stroke="url(#grad2)" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.8"/>
+                <path d="M8 20 Q32 -4 56 20" stroke="url(#grad2)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.5"/>
+                <defs>
+                  <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#7C3AED"/>
+                    <stop offset="100%" stop-color="#06B6D4"/>
+                  </linearGradient>
+                  <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#A855F7"/>
+                    <stop offset="100%" stop-color="#38BDF8"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="station-info">
+          <h1 class="station-name">Connec Radio</h1>
+          <p class="station-tagline">Streaming ao vivo · WebRTC</p>
+        </div>
+      </header>
+
+      <!-- Badge de status -->
+      <div class="status-bar" id="status-bar" role="status" aria-live="polite">
+        <span class="status-dot" id="status-dot"></span>
+        <span class="status-text" id="status-text">Conectando...</span>
+      </div>
+
+      <!-- Card Tocando Agora (Now Playing) -->
+      <section class="now-playing-card" id="now-playing-card" aria-label="Faixa Atual">
+        <div class="track-artwork">
+          <div class="vinyl-disc" id="vinyl-disc" aria-hidden="true">
+            <div class="vinyl-grooves"></div>
+            <div class="vinyl-center">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="music-note-icon">
+                <path d="M9 18V5l12-2v13"></path>
+                <circle cx="6" cy="18" r="3"></circle>
+                <circle cx="18" cy="16" r="3"></circle>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="track-details">
+          <div class="track-badge-row">
+            <span class="track-badge">TOCANDO AGORA</span>
+            <span class="track-live-tag" id="track-live-tag" style="display:none">● AO VIVO</span>
+          </div>
+          <div class="track-title-wrapper">
+            <h2 class="track-title" id="track-title">Connec Radio</h2>
+          </div>
+          <p class="track-artist" id="track-artist">Transmissão ao vivo</p>
+
+          <!-- Barra de progresso e tempo da faixa -->
+          <div class="track-progress-container" id="track-progress-container">
+            <div class="track-progress-bar">
+              <div class="track-progress-fill" id="track-progress-fill" style="width: 0%"></div>
+            </div>
+            <div class="track-time-display">
+              <span class="track-time-elapsed" id="track-time-elapsed">00:00</span>
+              <span class="track-time-total" id="track-time-total">—:—</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Visualizador de áudio -->
+      <div class="visualizer-wrapper" aria-hidden="true">
+        <canvas id="visualizer" width="560" height="80"></canvas>
+        <div class="visualizer-glow"></div>
+      </div>
+
+      <!-- Controles principais -->
+      <div class="controls-section">
+
+        <!-- Botão Play/Stop -->
+        <button
+          class="play-btn"
+          id="play-btn"
+          aria-label="Reproduzir Connec Radio"
+          title="Reproduzir / Parar"
+        >
+          <span class="play-icon" id="play-icon">
+            <!-- Play -->
+            <svg id="icon-play" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 5.14v13.72a1 1 0 001.5.87l11-6.86a1 1 0 000-1.74l-11-6.86A1 1 0 008 5.14z"/>
+            </svg>
+            <!-- Stop -->
+            <svg id="icon-stop" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="display:none">
+              <rect x="6" y="6" width="12" height="12" rx="2"/>
+            </svg>
+            <!-- Loading -->
+            <svg id="icon-loading" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none" class="spin">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" stroke-dasharray="28 56" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </button>
+
+        <!-- Controle de volume -->
+        <div class="volume-control">
+          <button class="volume-icon-btn" id="mute-btn" aria-label="Mudo">
+            <svg id="vol-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path id="vol-wave-1" d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              <path id="vol-wave-2" d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+          </button>
+          <div class="volume-slider-wrapper">
+            <input
+              type="range"
+              id="volume-slider"
+              class="volume-slider"
+              min="0" max="100" value="80"
+              aria-label="Volume"
+            />
+            <div class="volume-fill" id="volume-fill" style="width:80%"></div>
+          </div>
+          <span class="volume-value" id="volume-value">80%</span>
+        </div>
+
+      </div>
+
+      <!-- Informações da transmissão -->
+      <div class="stream-info-grid">
+        <div class="info-card">
+          <span class="info-label">Latência</span>
+          <span class="info-value" id="info-latency">—</span>
+        </div>
+        <div class="info-card">
+          <span class="info-label">Codec</span>
+          <span class="info-value" id="info-codec">—</span>
+        </div>
+        <div class="info-card">
+          <span class="info-label">Qualidade</span>
+          <span class="info-value" id="info-quality">—</span>
+        </div>
+        <div class="info-card">
+          <span class="info-label">Ouvindo há</span>
+          <span class="info-value" id="info-uptime">—</span>
+        </div>
+      </div>
+
+      <!-- Mensagem de erro SSL (aparece se necessário) -->
+      <div class="ssl-notice" id="ssl-notice" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <span>
+          Certificado auto-assinado detectado.
+          <a href="https://SERVER_IP_PLACEHOLDER" target="_blank" rel="noopener" id="ssl-trust-link">Clique aqui</a>
+          para confiar no certificado e depois tente novamente.
+        </span>
+      </div>
+
+    </article>
+
+    <!-- Rodapé -->
+    <footer class="player-footer">
+      <p>Powered by WebRTC · WHEP Protocol</p>
+      <p>Connec Radio &copy; <span id="footer-year"></span></p>
+    </footer>
+
+  </main>
+
+  <!-- Elemento de áudio (visível para o motor do browser, posicionado fora da tela) -->
+  <audio id="audio-element" autoplay playsinline style="position:fixed;top:-9999px;left:-9999px;opacity:0.01;pointer-events:none;width:1px;height:1px;"></audio>
+
+  <!-- Configuração dinâmica injetada pelo servidor (URLs, IP, etc.) -->
+  <script src="/config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

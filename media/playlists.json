@@ -1,0 +1,75 @@
+{
+  "playlists": [
+    {
+      "id": "geral",
+      "name": "Músicas Gerais (Todas)",
+      "folder": "musicas",
+      "color": "#10B981",
+      "tracks": []
+    },
+    {
+      "id": "mp3_novas",
+      "name": "MP3 Novas",
+      "folder": "musicas/mp3 novas",
+      "color": "#F59E0B",
+      "tracks": []
+    },
+    {
+      "id": "mp3_2026",
+      "name": "MP3 2026",
+      "folder": "musicas/mp3 2026",
+      "color": "#EC4899",
+      "tracks": []
+    },
+    {
+      "id": "mp3_base",
+      "name": "MP3 Base",
+      "folder": "musicas/mp3",
+      "color": "#3B82F6",
+      "tracks": []
+    },
+    {
+      "id": "pop_hits",
+      "name": "Pop & Hits",
+      "folder": "musicas/pop_hits",
+      "color": "#EC4899",
+      "tracks": []
+    },
+    {
+      "id": "flashback",
+      "name": "Flashback 80/90",
+      "folder": "musicas/flashback",
+      "color": "#06B6D4",
+      "tracks": []
+    },
+    {
+      "id": "dance",
+      "name": "Dance & Eletrônica",
+      "folder": "musicas/dance",
+      "color": "#8B5CF6",
+      "tracks": []
+    },
+    {
+      "id": "chill",
+      "name": "Lounge & Chill",
+      "folder": "musicas/chill",
+      "color": "#6366F1",
+      "tracks": []
+    },
+    {
+      "id": "acustico",
+      "name": "Acústico & MPB",
+      "folder": "musicas/acustico",
+      "color": "#14B8A6",
+      "tracks": []
+    }
+  ],
+  "jingles": {
+    "folder": "vinhetas",
+    "tracks": []
+  },
+  "commercials": {
+    "folder": "comerciais",
+    "tracks": []
+  }
+}
